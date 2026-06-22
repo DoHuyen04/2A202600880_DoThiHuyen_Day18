@@ -15,8 +15,13 @@ COLLECTION_NAME = "lab18_production"
 NAIVE_COLLECTION = "lab18_naive"
 
 # --- Embedding ---
-EMBEDDING_MODEL = "BAAI/bge-m3"
-EMBEDDING_DIM = 1024
+# Dùng paraphrase-multilingual-MiniLM-L12-v2 (~470MB, 384-dim) thay vì BAAI/bge-m3
+# (~2.27GB, 1024-dim): cùng là embedding đa ngôn ngữ (hỗ trợ tiếng Việt) nhưng nhẹ
+# hơn ~5x. Lý do: máy ít RAM không thể giữ đồng thời bge-m3 + cross-encoder reranker
+# trong bộ nhớ khi chạy pipeline (gây segfault). Trên máy đủ RAM có thể đổi lại bge-m3
+# (nhớ set EMBEDDING_DIM = 1024).
+EMBEDDING_MODEL = "paraphrase-multilingual-MiniLM-L12-v2"
+EMBEDDING_DIM = 384
 
 # --- Chunking ---
 HIERARCHICAL_PARENT_SIZE = 2048
